@@ -7,10 +7,10 @@ import createLinkedList from './linked-list.js';
 // }
 
 class HashMap {
-  constructor(loadFactor = null, capacity = null) {
+  constructor(loadFactor = null, capacity = 16) {
     this.loadFactor = loadFactor;
     this.capacity = capacity;
-    this.map = [];
+    this.buckets = Array(this.capacity);
   }
 
   hash(key) {
@@ -23,18 +23,28 @@ class HashMap {
   }
 
   set(key, value) {
-    const hashCode = hash(key);
-    if (!this.map[hashCode]) {
-      return (this.map[hashCode] = { [key]: value });
+    const index = this.hash(key);
+    if (!this.buckets[index]) {
+      return (this.buckets[index] = { [key]: value });
     }
 
-    if (this.map[hashCode] && !this.map[hashCode].key) {
-      return (this.map[hashCode] = { [key]: value });
+    if (this.buckets[index] && !this.buckets[index].key) {
+      return (this.buckets[index] = { [key]: value });
     }
 
-    if (this.map[hashCode]) {
+    if (this.buckets[index]) {
       throw new Error('Bucket has key already assigned, needs linked list.');
     }
+  }
+
+  get(key) {
+    const index = this.hash(key);
+    if (this.buckets[index]) {
+      if (Object.keys(this.buckets[index]).includes(key)) {
+        return this.buckets[index][key];
+      }
+    }
+    return null;
   }
 }
 
@@ -50,4 +60,4 @@ function hash(key) {
 const hashMap = new HashMap();
 console.log(hashMap.set('abc', '123'));
 console.log(hashMap.set('aaa', '456'));
-console.log(hashMap.map);
+console.log(hashMap.get('ab'));

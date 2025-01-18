@@ -46,6 +46,14 @@ class HashMap {
     }
     return null;
   }
+
+  has(key) {
+    const index = this.hash(key);
+    if (this.buckets[index]) {
+      return Object.keys(this.buckets[index]).includes(key) ? true : false;
+    }
+    return false;
+  }
 }
 
 function hash(key) {
@@ -60,4 +68,4 @@ function hash(key) {
 const hashMap = new HashMap();
 console.log(hashMap.set('abc', '123'));
 console.log(hashMap.set('aaa', '456'));
-console.log(hashMap.get('ab'));
+console.log(hashMap.has('aaa'));

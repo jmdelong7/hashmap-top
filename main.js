@@ -40,17 +40,25 @@ class HashMap {
 
   get(key) {
     const index = this.hash(key);
-    if (this.buckets[index][0] === key) {
-      return this.buckets[index][1];
+    if (!this.buckets[index]) return null;
+
+    for (let pair of this.buckets[index]) {
+      if (pair[0] === key) {
+        return pair[1];
+      }
     }
+
     return null;
   }
 
   has(key) {
     const index = this.hash(key);
-    if (this.buckets[index]) {
-      return this.buckets[index][0] === key ? true : false;
+    if (!this.buckets[index]) return false;
+
+    for (let pair of this.buckets[index]) {
+      if (pair[0] === key) return true;
     }
+
     return false;
   }
 

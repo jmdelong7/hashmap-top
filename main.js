@@ -25,11 +25,11 @@ class HashMap {
   set(key, value) {
     const index = this.hash(key);
     if (!this.buckets[index]) {
-      return (this.buckets[index] = { [key]: value });
+      return (this.buckets[index] = [key, value]);
     }
 
     if (this.buckets[index] && !this.buckets[index].key) {
-      return (this.buckets[index] = { [key]: value });
+      return (this.buckets[index] = [key, value]);
     }
 
     if (this.buckets[index]) {
@@ -39,10 +39,8 @@ class HashMap {
 
   get(key) {
     const index = this.hash(key);
-    if (this.buckets[index]) {
-      if (Object.keys(this.buckets[index]).includes(key)) {
-        return this.buckets[index][key];
-      }
+    if (this.buckets[index][0] === key) {
+      return this.buckets[index][1];
     }
     return null;
   }
@@ -50,7 +48,7 @@ class HashMap {
   has(key) {
     const index = this.hash(key);
     if (this.buckets[index]) {
-      return Object.keys(this.buckets[index]).includes(key) ? true : false;
+      return this.buckets[index][0] === key ? true : false;
     }
     return false;
   }
@@ -80,7 +78,7 @@ class HashMap {
     const keys = [];
     for (let i = 0; i < this.buckets.length; i++) {
       if (this.buckets[i]) {
-        keys.push(Object.keys(this.buckets[i])[0]);
+        keys.push(this.buckets[i][0]);
       }
     }
     return keys;
@@ -90,7 +88,7 @@ class HashMap {
     const values = [];
     for (let i = 0; i < this.buckets.length; i++) {
       if (this.buckets[i]) {
-        values.push(Object.values(this.buckets[i])[0]);
+        values.push(this.buckets[i][1]);
       }
     }
     return values;
@@ -100,10 +98,7 @@ class HashMap {
     const arr = [];
     for (let i = 0; i < this.buckets.length; i++) {
       if (this.buckets[i]) {
-        const keyVal = [];
-        keyVal.push(Object.keys(this.buckets[i])[0]);
-        keyVal.push(Object.values(this.buckets[i])[0]);
-        arr.push(keyVal);
+        arr.push(this.buckets[i]);
       }
     }
     return arr;
@@ -119,8 +114,8 @@ function hash(key) {
   return hashCode;
 }
 
-const hashMap = new HashMap();
-
-console.log(hashMap.set('abc', '123'));
-console.log(hashMap.set('aaa', '456'));
-console.log(hashMap.entries());
+const test = new HashMap();
+test.set('apple', 'red');
+test.set('banana', 'yellow');
+test.set('carrot', 'orange');
+console.log(test.entries());

@@ -75,6 +75,16 @@ class HashMap {
       delete this.buckets[i];
     }
   }
+
+  keys() {
+    const keys = [];
+    for (let i = 0; i < this.buckets.length; i++) {
+      if (this.buckets[i]) {
+        keys.push(Object.keys(this.buckets[i])[0]);
+      }
+    }
+    return keys;
+  }
 }
 
 function hash(key) {
@@ -90,7 +100,4 @@ const hashMap = new HashMap();
 
 console.log(hashMap.set('abc', '123'));
 console.log(hashMap.set('aaa', '456'));
-console.log(hashMap.length());
-console.log(hashMap.clear());
-console.log(hashMap.length());
-console.log(hashMap);
+console.log(hashMap.keys());

@@ -85,6 +85,29 @@ class HashMap {
     }
     return keys;
   }
+
+  values() {
+    const values = [];
+    for (let i = 0; i < this.buckets.length; i++) {
+      if (this.buckets[i]) {
+        values.push(Object.values(this.buckets[i])[0]);
+      }
+    }
+    return values;
+  }
+
+  entries() {
+    const arr = [];
+    for (let i = 0; i < this.buckets.length; i++) {
+      if (this.buckets[i]) {
+        const keyVal = [];
+        keyVal.push(Object.keys(this.buckets[i])[0]);
+        keyVal.push(Object.values(this.buckets[i])[0]);
+        arr.push(keyVal);
+      }
+    }
+    return arr;
+  }
 }
 
 function hash(key) {
@@ -100,4 +123,4 @@ const hashMap = new HashMap();
 
 console.log(hashMap.set('abc', '123'));
 console.log(hashMap.set('aaa', '456'));
-console.log(hashMap.keys());
+console.log(hashMap.entries());

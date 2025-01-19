@@ -68,7 +68,7 @@ class HashMap {
     const bucket = this.buckets[index];
     const length = bucket.length;
 
-    for (let i = 0; i < length - 1; i++) {
+    for (let i = 0; i < length; i++) {
       if (bucket[i][0] === key) {
         delete bucket[i];
         if (!(i in bucket)) delete this.buckets[index];
@@ -80,7 +80,9 @@ class HashMap {
   length() {
     let count = 0;
     for (let i = 0; i < this.buckets.length; i++) {
-      if (this.buckets[i]) count++;
+      if (this.buckets[i]) {
+        this.buckets[i].forEach(() => count++);
+      }
     }
     return count;
   }
@@ -95,7 +97,7 @@ class HashMap {
     const keys = [];
     for (let i = 0; i < this.buckets.length; i++) {
       if (this.buckets[i]) {
-        keys.push(this.buckets[i][0]);
+        this.buckets[i].forEach((pair) => keys.push(pair[0]));
       }
     }
     return keys;
@@ -105,20 +107,20 @@ class HashMap {
     const values = [];
     for (let i = 0; i < this.buckets.length; i++) {
       if (this.buckets[i]) {
-        values.push(this.buckets[i][1]);
+        this.buckets[i].forEach((pair) => values.push(pair[1]));
       }
     }
     return values;
   }
 
   entries() {
-    const arr = [];
+    const pairs = [];
     for (let i = 0; i < this.buckets.length; i++) {
       if (this.buckets[i]) {
-        arr.push(this.buckets[i]);
+        this.buckets[i].forEach((pair) => pairs.push(pair));
       }
     }
-    return arr;
+    return pairs;
   }
 }
 
@@ -131,7 +133,7 @@ function hash(key) {
   return hashCode;
 }
 
-const test = new HashMap(0.75, 16);
+const test = new HashMap(0.75, 4);
 test.set('apple', 'red');
 test.set('banana', 'yellow');
 test.set('carrot', 'orange');
@@ -140,6 +142,5 @@ test.set('carrott', 'asdf');
 test.set('palpe', 'asdf');
 test.set('appel', 'fsdf');
 
-test.remove('appel');
-
-console.log(test.buckets);
+console.log(test.length());
+console.log(test.entries());

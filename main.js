@@ -65,8 +65,16 @@ class HashMap {
   remove(key) {
     if (!this.has(key)) return false;
     const index = this.hash(key);
-    delete this.buckets[index];
-    return true;
+    const bucket = this.buckets[index];
+    const length = bucket.length;
+
+    for (let i = 0; i < length - 1; i++) {
+      if (bucket[i][0] === key) {
+        delete bucket[i];
+        if (!(i in bucket)) delete this.buckets[index];
+        return true;
+      }
+    }
   }
 
   length() {
@@ -131,5 +139,7 @@ test.set('carrot', 'orange');
 test.set('carrott', 'asdf');
 test.set('palpe', 'asdf');
 test.set('appel', 'fsdf');
+
+test.remove('appel');
 
 console.log(test.buckets);

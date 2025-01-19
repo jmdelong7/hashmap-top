@@ -54,6 +54,13 @@ class HashMap {
     }
     return false;
   }
+
+  remove(key) {
+    if (!this.has(key)) return false;
+    const index = this.hash(key);
+    delete this.buckets[index];
+    return true;
+  }
 }
 
 function hash(key) {
@@ -68,4 +75,6 @@ function hash(key) {
 const hashMap = new HashMap();
 console.log(hashMap.set('abc', '123'));
 console.log(hashMap.set('aaa', '456'));
-console.log(hashMap.has('aaa'));
+
+console.log(hashMap.remove('aaa'));
+console.log(hashMap);

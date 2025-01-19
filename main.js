@@ -6,7 +6,7 @@
 // }
 
 class HashMap {
-  constructor(loadFactor = null, capacity = 16) {
+  constructor(loadFactor = 0.75, capacity = 16) {
     this.loadFactor = loadFactor;
     this.capacity = capacity;
     this.buckets = Array(this.capacity);
@@ -21,8 +21,31 @@ class HashMap {
     return hashCode;
   }
 
+  adjustCapacity() {
+    const numNodes = this.length();
+    const capacity = this.capacity;
+    const increaseCapacityAt = this.loadFactor * capacity;
+
+    let update = false;
+    if (numNodes >= increaseCapacityAt) {
+      this.capacity = capacity * 2;
+      update = true;
+    }
+
+    if (update === false) return;
+
+    const oldBuckets = this.buckets;
+    this.buckets = Array(this.capacity);
+    for (let i = 0; i < this.buckets.length; i++) {
+      if (oldBuckets[i]) {
+        oldBuckets[i].map((pair) => this.set(pair[0], pair[1]));
+      }
+    }
+  }
+
   set(key, value) {
     const index = this.hash(key);
+    this.adjustCapacity();
     if (!this.buckets[index]) {
       this.buckets[index] = [[key, value]];
       return;
@@ -133,14 +156,20 @@ function hash(key) {
   return hashCode;
 }
 
-const test = new HashMap(0.75, 4);
+const test = new HashMap(0.75, 16);
 test.set('apple', 'red');
 test.set('banana', 'yellow');
 test.set('carrot', 'orange');
+test.set('dog', 'brown');
+test.set('elephant', 'gray');
+test.set('frog', 'green');
+test.set('grape', 'purple');
+test.set('hat', 'black');
+test.set('ice cream', 'white');
+test.set('jacket', 'blue');
+test.set('kite', 'pink');
+test.set('lion', 'golden');
+test.set('moon', 'silver');
+test.set('moon', 'gray');
 
-test.set('carrott', 'asdf');
-test.set('palpe', 'asdf');
-test.set('appel', 'fsdf');
-
-console.log(test.length());
-console.log(test.entries());
+console.log(test);

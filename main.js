@@ -61,6 +61,20 @@ class HashMap {
     delete this.buckets[index];
     return true;
   }
+
+  length() {
+    let count = 0;
+    for (let i = 0; i < this.buckets.length; i++) {
+      if (this.buckets[i]) count++;
+    }
+    return count;
+  }
+
+  clear() {
+    for (let i = 0; i < this.buckets.length; i++) {
+      delete this.buckets[i];
+    }
+  }
 }
 
 function hash(key) {
@@ -73,8 +87,10 @@ function hash(key) {
 }
 
 const hashMap = new HashMap();
+
 console.log(hashMap.set('abc', '123'));
 console.log(hashMap.set('aaa', '456'));
-
-console.log(hashMap.remove('aaa'));
+console.log(hashMap.length());
+console.log(hashMap.clear());
+console.log(hashMap.length());
 console.log(hashMap);

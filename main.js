@@ -1,4 +1,3 @@
-import createLinkedList from './linked-list.js';
 // Use the following snippet whenever you access a bucket through an index.
 // We want to throw an error if we try to access an out-of-bounds index:
 
@@ -25,16 +24,18 @@ class HashMap {
   set(key, value) {
     const index = this.hash(key);
     if (!this.buckets[index]) {
-      return (this.buckets[index] = [key, value]);
+      this.buckets[index] = [[key, value]];
+      return;
     }
 
-    if (this.buckets[index] && !this.buckets[index].key) {
-      return (this.buckets[index] = [key, value]);
+    for (let pair of this.buckets[index]) {
+      if (pair[0] === key) {
+        pair[1] = value;
+        return;
+      }
     }
 
-    if (this.buckets[index]) {
-      throw new Error('Bucket has key already assigned, needs linked list.');
-    }
+    this.buckets[index].push([key, value]);
   }
 
   get(key) {
@@ -114,8 +115,13 @@ function hash(key) {
   return hashCode;
 }
 
-const test = new HashMap();
+const test = new HashMap(0.75, 16);
 test.set('apple', 'red');
 test.set('banana', 'yellow');
 test.set('carrot', 'orange');
-console.log(test.entries());
+
+test.set('carrott', 'asdf');
+test.set('palpe', 'asdf');
+test.set('appel', 'fsdf');
+
+console.log(test.buckets);
